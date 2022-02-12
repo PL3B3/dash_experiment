@@ -9,6 +9,7 @@ dash = "*"
 jupyter-dash = "*"
 jupyter = "*"
 requests = "*"
+numpy = "*"
 
 [dev-packages]
 flake8 = "*"
