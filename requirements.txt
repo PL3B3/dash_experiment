@@ -17,7 +17,7 @@ bleach==4.1.0; python_version >= '3.6'
 brotli==1.0.9
 certifi==2021.10.8
 cffi==1.15.0
-charset-normalizer==2.0.11; python_version >= '3'
+charset-normalizer==2.0.12; python_version >= '3'
 click==8.0.3; python_version >= '3.6'
 colorama==0.4.4; platform_system == 'Windows'
 dash-core-components==2.0.0
@@ -58,7 +58,7 @@ nest-asyncio==1.5.4; python_version >= '3.5'
 notebook==6.4.8; python_version >= '3.6'
 numpy==1.22.2; python_version < '3.10' and platform_machine != 'aarch64' and platform_machine != 'arm64'
 packaging==21.3; python_version >= '3.6'
-pandas==1.4.0
+pandas==1.4.1
 pandocfilters==1.5.0; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3'
 parso==0.8.3; python_version >= '3.6'
 pathspec==0.9.0
@@ -79,7 +79,7 @@ pywinpty==2.0.2; os_name == 'nt'
 pyzmq==22.3.0; python_version >= '3.6'
 qtconsole==5.2.2; python_version >= '3.6'
 qtpy==2.0.1; python_version >= '3.6'
-requests==2.27.1; python_version >= '2.7' and python_version not in '3.0, 3.1, 3.2, 3.3, 3.4, 3.5'
+requests==2.27.1
 retrying==1.3.3
 send2trash==1.8.0
 setuptools==60.8.2; python_version >= '3.7'
