@@ -1,18 +1,16 @@
+import os
 import pandas as pd
 from dash import Dash, dcc, html, Input, Output
 import json
 import random
 import src.util as util
 import src.figs as figs
+import requests
 
-HEX_OPACITY = 0.3
-HEX_DENSITY = 25
-FIG_WIDE = None
-FIG_TALL = None
-MAP_STYLE = 'carto-positron'
+
+WEATHER_API_KEY = os.environ.get('WEATHER_API_KEY')
 
 app = Dash(__name__)
-
 server = app.server
 
 # generate fake fire data per location
@@ -35,6 +33,10 @@ app.layout = html.Div([
         }
     ),
 
+    dcc.Markdown(
+        id='weather-blurb'
+    ),
+
     dcc.Graph(
         figure=figs.get_count_fire_fig(mock_df),
         id='fire-graph'
@@ -45,9 +47,10 @@ app.layout = html.Div([
 # click callback example
 @app.callback(
     Output('click-receiver', 'children'),
+    Output('click-receiver', 'location'),
     [Input('fire-graph', 'clickData')]
 )
-def display_click_data(clickData):
+def display_location(clickData):
     # print(clickData['points'][0]['location'])
     update_string = 'Click on a hex!'
     location = util.click_to_lat_lon(clickData)
@@ -58,7 +61,26 @@ def display_click_data(clickData):
             f'{lat:.3f}\N{DEGREE SIGN}, '
             f'{lon:.3f}\N{DEGREE SIGN}'
         )
-    return update_string
+    return update_string, location
+
+
+@app.callback(
+    Output('weather-blurb', 'children'),
+    Input('click-receiver', 'location')
+)
+def display_weather_blurb(location):
+    markdown = None
+    if location:
+        lat, lon = location
+        print(lat, lon)
+        weather_url = (
+            f'https://api.openweathermap.org/data/2.5/weather?'
+            f'units=imperial&lat={lat}&lon={lon}&appid={WEATHER_API_KEY}'
+        )
+        weather_req = requests.get(weather_url)
+        if weather_req.status_code == 200:
+            markdown = figs.get_weather_blurb(weather_req.json())
+    return markdown
 
 
 if __name__ == '__main__':
