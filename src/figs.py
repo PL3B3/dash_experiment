@@ -1,5 +1,5 @@
 import plotly.figure_factory as ff
-from numpy import mean, pi
+from numpy import mean
 
 
 HEX_OPACITY = 0.3
@@ -45,6 +45,7 @@ def get_count_fire_fig(df):
     return fire_count_fig
 
 
+# converts degree to cardinal direction string
 def deg_to_dir(deg):
     for key, value in DIRECTION_DICT.items():
         if min_deg_diff(deg, key) <= DIRECTION_BIN_SIZE / 2:
@@ -60,15 +61,11 @@ def get_weather_blurb(w_json):
     name = w_json['name']
     summary = w_json['weather'][0]['main']
     temp = w_json['main']['temp']
-    humid = w_json['main']['humidity']
     wind_speed = w_json['wind']['speed']
     wind_angle = deg_to_dir(w_json['wind']['deg'])
     markdown = (
-        f'# Nearest city: {name}\n'
-        f'* Status: {summary}\n'
-        f'* Temperature: {temp} \N{DEGREE SIGN} F\n'
-        f'* Humidity: {humid}\n'
-        f'* Wind: {wind_speed} miles an hour {wind_angle}\n'
+        f'### Nearest city: {name}\n'
+        f'{summary}, temperature is {temp} \N{DEGREE SIGN} F, '
+        f'with wind @ {wind_speed} mph {wind_angle}'
     )
-
     return markdown

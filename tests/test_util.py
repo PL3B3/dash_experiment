@@ -20,5 +20,6 @@ def test_y_to_lat_bounds():
     with raises(Exception):
         y_to_lat(3.0)
 
+
 def test_ci_cd():
     assert(True)

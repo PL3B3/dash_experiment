@@ -69,7 +69,11 @@ def display_location(clickData):
     Input('click-receiver', 'location')
 )
 def display_weather_blurb(location):
-    markdown = None
+    markdown = '''
+    ### California
+
+    Sunny, expensive, lots of tech people
+    '''
     if location:
         lat, lon = location
         print(lat, lon)
