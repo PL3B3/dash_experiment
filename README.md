@@ -8,6 +8,7 @@ Navigate to the project root
 Open http://127.0.0.1:8050/ 
 
 
+
 ### Run with pipenv
 > pipenv install
 > pipenv run python app.py
