@@ -19,11 +19,13 @@ jobs:
     - name: Install pipenv
       run: pipx install pipenv
     - name: Set up Python 3.9
+      id: python-setup-and-cache
       uses: actions/setup-python@v2
       with:
         python-version: "3.9"
         cache: 'pipenv'
     - name: Install pipenv dependencies
+      if: steps.python-setup-and-cache.outputs.cache-hit != 'true'
       run: |
         pipenv install --dev
     - name: Lint with flake8
