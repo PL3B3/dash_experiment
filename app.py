@@ -13,6 +13,8 @@ MAP_STYLE = 'carto-positron'
 
 app = Dash(__name__)
 
+server = app.server
+
 # generate fake fire data per location
 locations = json.load(open('data/locations.json'))
 mock_df = pd.DataFrame(

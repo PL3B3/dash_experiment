@@ -10,6 +10,7 @@ jupyter-dash = "*"
 jupyter = "*"
 requests = "*"
 numpy = "*"
+gunicorn = "*"
 
 [dev-packages]
 flake8 = "*"
