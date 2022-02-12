@@ -24,7 +24,7 @@ def click_to_lat_lon(clickData):
     location = None
     if clickData:
         x, y = map(
-            float, 
+            float,
             clickData['points'][0]['location'].split(',')
         )
         lat = np.rad2deg(y_to_lat(y))
