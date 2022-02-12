@@ -1,68 +1,53 @@
-"""
-Running
-  `python app.py`
-  'pipenv run python app.py'
-
-See http://127.0.0.1:8050/ in your web browser.
-"""
-
-from dash import Dash, html, dcc
 import pandas as pd
-import plotly.express as px
+import numpy as np
+from dash import Dash, dcc, html
+import plotly.figure_factory as ff
+import json
+import random
+
+HEX_OPACITY = 0.3
 
 app = Dash(__name__)
 
-colors = {
-  'background': '#111111',
-  'text': '#fc6c85'
-}
-
-df = pd.DataFrame({
-    "Fruit": ["Apples", "Oranges", "Bananas", "Apples", "Oranges", "Bananas"],
-    "Amount": [4, 1, 2, 2, 4, 5],
-    "City": ["SF", "SF", "SF", "Montreal", "Montreal", "Montreal"]
-})
-
-fruit_fig = px.bar(df, x="City", y="Amount", color="Fruit", barmode="group")
-
-fruit_fig.update_layout(
-  plot_bgcolor=colors['background'],
-  paper_bgcolor=colors['background'],
-  font_color=colors['text']
+# generate fake fire data per location
+locations = json.load(open('data/locations.json'))
+mock_df = pd.DataFrame(
+  [location + [random.random()] for location in locations],
+  columns=['LAT', 'LON', 'FIRE_SCORE']
 )
 
+# median fire probability per hex, based on mock data
+fire_prob_median_fig = ff.create_hexbin_mapbox(
+    data_frame=mock_df, lat="LAT", lon="LON",
+    mapbox_style='open-street-map',
+    nx_hexagon=12, opacity=HEX_OPACITY, labels={"color": "Median fire chance"},
+    color="FIRE_SCORE", agg_func=np.median,
+    min_count=1, width=600, height=600
+)
+fire_prob_median_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-markdown_text = '''
-### First Dash App
+# number of fires recorded per hex
+fire_count_fig = ff.create_hexbin_mapbox(
+    data_frame=mock_df, lat="LAT", lon="LON",
+    mapbox_style='open-street-map',
+    nx_hexagon=12, opacity=HEX_OPACITY, labels={"color": "# of fires"},
+    min_count=1, width=600, height=600
+)
+fire_count_fig.update_layout(margin={"r":0,"t":0,"l":0,"b":0})
 
-We can do the text writing in markdown yay
 
-click on [this link](https://dash.plotly.com/layout). do it. do it now
-'''
-
-app.layout = html.Div(children=[
-  dcc.Markdown(
-    children=markdown_text,
+# you can switch fire_prob_median_fig for fire_count_fig
+app.layout = html.Div([
+  html.H1(
+    children='Wildfires? In MY hexagon?',
     style={
-      'color': colors['text']
+      'color': '#FF7F50'
     }
   ),
 
-  html.Br(),
-  html.Label("Slider"),
-  dcc.Slider(
-    min=1,
-    max=5,
-    marks={i : f'Day {i}' for i in range(1, 6)},
-    value=5
-  ),
-
-  html.Br(),
-  dcc.Graph(
-    id='fruit-graph',
-    figure=fruit_fig
-  )
+  dcc.Graph(figure=fire_prob_median_fig)
 ])
 
+
 if __name__ == '__main__':
-  app.run_server(debug=True)
+    app.run_server(debug=True)
