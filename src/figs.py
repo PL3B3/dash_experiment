@@ -3,7 +3,7 @@ from numpy import mean
 
 
 HEX_OPACITY = 0.3
-HEX_DENSITY = 25
+HEX_DENSITY = 15
 FIG_WIDE = None
 FIG_TALL = None
 MAP_STYLE = 'carto-positron'
@@ -28,7 +28,10 @@ def get_mean_fire_fig(df):
         color="FIRE_SCORE", agg_func=mean,
         min_count=1, width=FIG_WIDE, height=FIG_TALL
     )
-    fire_prob_mean_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fire_prob_mean_fig.update_layout(
+        clickmode='event+select',
+        margin={"r": 0, "t": 0, "l": 0, "b": 0}
+    )
     return fire_prob_mean_fig
 
 
@@ -41,7 +44,10 @@ def get_count_fire_fig(df):
         labels={"color": "# of fires"},
         min_count=1, width=FIG_WIDE, height=FIG_TALL
     )
-    fire_count_fig.update_layout(margin={"r": 0, "t": 0, "l": 0, "b": 0})
+    fire_count_fig.update_layout(
+        clickmode='event+select',
+        margin={"r": 0, "t": 0, "l": 0, "b": 0}
+    )
     return fire_count_fig
 
 
@@ -58,14 +64,13 @@ def min_deg_diff(deg_1, deg_2):
 
 
 def get_weather_blurb(w_json):
-    name = w_json['name']
     summary = w_json['weather'][0]['main']
     temp = w_json['main']['temp']
     wind_speed = w_json['wind']['speed']
     wind_angle = deg_to_dir(w_json['wind']['deg'])
     markdown = (
-        f'### Nearest city: {name}\n'
-        f'{summary}, temperature is {temp} \N{DEGREE SIGN} F, '
+        f'Hex weather: '
+        f'{summary}, {temp} \N{DEGREE SIGN} F, '
         f'with wind @ {wind_speed} mph {wind_angle}'
     )
     return markdown
