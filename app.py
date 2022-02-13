@@ -10,8 +10,11 @@ from src.weather_blurb import get_weather_blurb
 # generate fake fire data per location
 locations = json.load(open('data/locations.json'))
 mock_df = pd.DataFrame(
-    [location + [random.random()] for location in locations],
-    columns=['LAT', 'LON', 'FIRE_SCORE']
+    [
+        location + [random.random(), random.randint(2018, 2021)]
+        for location in locations
+    ],
+    columns=['lat', 'lon', 'fire_score', 'year']
 )
 
 
