@@ -23,7 +23,7 @@ app.layout = html.Div([
         id='click-receiver'
     ),
 
-    dcc.Markdown(
+    html.H3(
         id='weather-blurb'
     ),
 

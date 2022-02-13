@@ -20,9 +20,7 @@ DIRECTION_DICT = {
 
 
 def get_weather_blurb(location):
-    markdown = '''
-    Sunny, expensive, lots of tech people
-    '''
+    blurb = 'Sunny, expensive, lots of tech people'
     if location:
         location_key = f'{location[0]:.3f}{location[1]:.3f}'
         cached_weather_json = weather_cache.get(location_key)
@@ -33,12 +31,12 @@ def get_weather_blurb(location):
                 int(time.time()) - cached_weather_json['dt']
             ) < WEATHER_CACHE_TIMEOUT_SECONDS
         ):
-            markdown = json_to_blurb(cached_weather_json)
+            blurb = json_to_blurb(cached_weather_json)
         else:
             weather_cache[location_key] = get_weather_json(location)
             weather_cache[location_key]['dt'] = int(time.time())
-            markdown = json_to_blurb(weather_cache[location_key])
-    return markdown
+            blurb = json_to_blurb(weather_cache[location_key])
+    return blurb
 
 
 def get_weather_json(location):
@@ -52,16 +50,16 @@ def get_weather_json(location):
 
 
 def json_to_blurb(w_json):
-    summary = w_json['weather'][0]['main']
-    temp = w_json['main']['temp']
-    wind_speed = w_json['wind']['speed']
-    wind_angle = deg_to_dir(w_json['wind']['deg'])
-    markdown = (
+    summary = w_json['weather'][0]['main'].rjust(6, '\u00A0')
+    temp = str(w_json['main']['temp']).ljust(5, '0')
+    wind_speed = str(w_json['wind']['speed']).rjust(5, '\u00A0')
+    wind_angle = deg_to_dir(w_json['wind']['deg']).ljust(3, '\u00A0')
+    blurb = (
         f'Hex weather: '
         f'{summary}, {temp} \N{DEGREE SIGN} F, '
         f'with wind @ {wind_speed} mph {wind_angle}'
     )
-    return markdown
+    return blurb
 
 
 # converts degree to cardinal direction string
