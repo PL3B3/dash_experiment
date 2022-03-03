@@ -26,8 +26,8 @@ def get_hex_fig(df, use_count=True):
             {"color": "Fires", "frame": "Year"}
             if use_count else
             {"color": "Fire Chance", "frame": "Year"}),
-        color=None if use_count else "fire_score",
-        agg_func=None if use_count else mean,
+        color="fire_score" if use_count else "fire_score",
+        agg_func=aggregate_and_print if use_count else mean,
         min_count=1,
         width=HEX_ST['w'],
         height=HEX_ST['h']
@@ -43,5 +43,11 @@ def get_hex_fig(df, use_count=True):
     hex_fig.layout.sliders[0].pad = {"r": 0, "t": 10, "l": 20, "b": 10}
     hex_fig.layout.updatemenus[0].pad = {"r": 0, "t": 30, "l": 10, "b": 0}
     hex_fig.layout.updatemenus[0].x = 0.106
-    print(hex_fig.layout)
+    # print(hex_fig.layout)
     return hex_fig
+
+
+def aggregate_and_print(num_list):
+    print(num_list)
+    print("HAMBLO")
+    return mean(num_list)

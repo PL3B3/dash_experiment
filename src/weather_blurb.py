@@ -41,17 +41,20 @@ def get_weather_blurb(location):
 
 def get_weather_json(location):
     lat, lon = location
-    weather_url = (
-        f'https://api.openweathermap.org/data/2.5/weather?'
-        f'units=imperial&lat={lat}&lon={lon}&appid={WEATHER_API_KEY}'
-    )
-    weather_req = requests.get(weather_url)
+    params = {
+        'units': 'imperial',
+        'lat': lat,
+        'lon': lon,
+        'appid': WEATHER_API_KEY
+    }
+    weather_url = 'https://api.openweathermap.org/data/2.5/weather'
+    weather_req = requests.get(weather_url, params=params)
     return weather_req.json()
 
 
 def json_to_blurb(w_json):
     summary = w_json['weather'][0]['main'].rjust(6, '\u00A0')
-    temp = str(w_json['main']['temp']).ljust(5, '0')
+    temp = str(w_json['main']['temp']).ljust(5, '\u00A0')
     wind_speed = str(w_json['wind']['speed']).rjust(5, '\u00A0')
     wind_angle = deg_to_dir(w_json['wind']['deg']).ljust(3, '\u00A0')
     blurb = (

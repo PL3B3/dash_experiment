@@ -20,7 +20,6 @@ mock_df = pd.DataFrame(
 
 app = Dash(__name__)
 server = app.server
-# you can switch fire_prob_median_fig for fire_count_fig
 app.layout = html.Div([
     html.H2(
         id='click-receiver'
