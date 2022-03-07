@@ -18,14 +18,11 @@ turn into grid data
 """
 
 with open('data\\PNM_Mar_2022.txt') as file:
-    lines = file.read().splitlines()
-    data_lines = lines[TABLE_START:]
+    lines = file.read().splitlines()[TABLE_START:]
+    data = [line[ROW_START:].split() for line in lines]
 
-    print(data_lines[0][ROW_START:])
-
-    data = [line[ROW_START:].split() for line in data_lines]
-
-    print(data[-1])
     df = pd.DataFrame(data)
+    df.columns = df.iloc[0]
+    df = df[1:]
+
     df.to_csv("data/test_noaa_precip.csv")
-    print(df)
