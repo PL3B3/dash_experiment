@@ -1,6 +1,7 @@
 import plotly.figure_factory as ff
 from numpy import mean
 
+hex_point_groups = []
 
 HEX_ST = {
     'map': 'carto-positron',
@@ -56,5 +57,5 @@ This corresponds to the order in which the underlying data is aggregated
 
 
 def aggregate_and_print(num_list):
-    print(num_list)
+    hex_point_groups.append(num_list)
     return max(num_list)

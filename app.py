@@ -2,7 +2,7 @@ import pandas as pd
 from dash import Dash, dcc, html, Input, Output
 import json
 import random
-from src.hex_fig import get_hex_fig
+from src.hex_fig import get_hex_fig, hex_point_groups
 from src.location_blurb import get_location_blurb
 from src.weather_blurb import get_weather_blurb
 
@@ -46,6 +46,8 @@ app.layout = html.Div([
 )
 def display_location(clickData):
     print(clickData)
+    point_num = clickData['points'][0]['pointNumber']
+    print(f'Data @ point {point_num}: {hex_point_groups[point_num]}')
     return get_location_blurb(clickData)
 
 
